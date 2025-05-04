@@ -74,11 +74,11 @@ if show_equipment_table:
     def color_downtime(val):
         val_float = float(val)
         if val_float < 30:
-            return 'background-color: lightgreen'
+            return 'background-color: lightcoral'
         elif val_float < 50:
             return 'background-color: khaki'
         else:
-            return 'background-color: lightcoral'
+            return 'background-color: lightgreen'
 
     formatted_df = filtered_df[["Location", "Equipment_Downtime (hrs/month)"]].copy()
     formatted_df["Equipment_Downtime (hrs/month)"] = formatted_df["Equipment_Downtime (hrs/month)"].map(lambda x: f"{x:.2f}")
@@ -93,5 +93,4 @@ if show_equipment_table:
 
 st.markdown("---")
 st.caption("Dashboard by Khanh Huynh | Data Mining Class | Streamlit")
-
 
