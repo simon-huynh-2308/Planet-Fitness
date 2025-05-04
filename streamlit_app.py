@@ -15,6 +15,19 @@ show_equipment_table = st.sidebar.checkbox("Show Detailed Equipment Table", valu
 filtered_df = df if selected_location == "All" else df[df["Location"] == selected_location]
 filtered_df = filtered_df[filtered_df["Avg_Satisfaction_Score (1-10)"] >= satisfaction_threshold]
 
+# --- KPI Summary Cards ---
+st.subheader("📊 Key Metrics Overview")
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric("Avg NPS Score", f"{df['NPS_Score'].mean():.1f}")
+
+with col2:
+    st.metric("Avg Churn Rate", f"{df['Monthly_Churn_Rate (%)'].mean():.2f}%")
+
+with col3:
+    st.metric("Avg Equipment Downtime", f"{df['Equipment_Downtime (hrs/month)'].mean():.2f} hrs")
+
 st.title("Planet Fitness Dashboard: Customer Satisfaction & Operational Efficiency")
 st.markdown("""
 This dashboard helps regional managers assess customer satisfaction trends and equipment maintenance issues to support marketing and operational decisions.
@@ -61,6 +74,27 @@ gauge_fig = go.Figure(go.Indicator(
 ))
 st.plotly_chart(gauge_fig)
 
+# --- KPI Summary Cards ---
+st.subheader("📊 Key Metrics Overview")
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric("Avg NPS Score", f"{df['NPS_Score'].mean():.1f}")
+
+with col2:
+    st.metric("Avg Churn Rate", f"{df['Monthly_Churn_Rate (%)'].mean():.2f}%")
+
+with col3:
+    st.metric("Avg Equipment Downtime", f"{df['Equipment_Downtime (hrs/month)'].mean():.2f} hrs")
+
+# --- Conditional Alerts ---
+if sat_score < 7.0:
+    st.warning("⚠️ Warning: Average satisfaction is below acceptable level.")
+
+if filtered_df["Monthly_Churn_Rate (%)"].mean() > 6.0:
+    st.error("🚨 High churn rate detected. Investigate retention strategies.")
+
+
 # --- Equipment Downtime ---
 st.header("Equipment Downtime (hrs/month)")
 bar_chart = px.bar(filtered_df, 
@@ -94,23 +128,4 @@ if show_equipment_table:
 st.markdown("---")
 st.caption("Dashboard by Khanh Huynh | Data Mining Class | Streamlit")
 
-# --- KPI Summary Cards ---
-st.subheader("📊 Key Metrics Overview")
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.metric("Avg NPS Score", f"{df['NPS_Score'].mean():.1f}")
-
-with col2:
-    st.metric("Avg Churn Rate", f"{df['Monthly_Churn_Rate (%)'].mean():.2f}%")
-
-with col3:
-    st.metric("Avg Equipment Downtime", f"{df['Equipment_Downtime (hrs/month)'].mean():.2f} hrs")
-
-# --- Conditional Alerts ---
-if sat_score < 7.0:
-    st.warning("⚠️ Warning: Average satisfaction is below acceptable level.")
-
-if filtered_df["Monthly_Churn_Rate (%)"].mean() > 6.0:
-    st.error("🚨 High churn rate detected. Investigate retention strategies.")
 
