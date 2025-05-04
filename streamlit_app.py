@@ -34,12 +34,20 @@ st.plotly_chart(nps_chart)
 
 # --- Churn Rate ---
 st.header("Monthly Churn Rate")
-st.subheader("Churn by Location")
-churn_chart = px.bar(filtered_df, 
-                    x="Location", 
-                    y="Monthly_Churn_Rate (%)", 
-                    title="Churn Rate by Location")
-st.plotly_chart(churn_chart)
+st.subheader("Churn Rate Trend (Simulated)")
+
+# Simulate time series data (e.g., 6 months) since original dataset lacks time component
+import numpy as np
+import datetime as dt
+
+months = pd.date_range(end=dt.datetime.today(), periods=6, freq='M')
+trend_data = pd.DataFrame({
+    "Month": months,
+    "Churn Rate (%)": np.random.uniform(2.0, 9.0, size=6).round(2)
+})
+
+churn_trend_chart = px.line(trend_data, x="Month", y="Churn Rate (%)", markers=True, title="Churn Rate Over Last 6 Months")
+st.plotly_chart(churn_trend_chart)
 
 # --- Satisfaction Score ---
 st.header("Average Satisfaction Score")
@@ -82,5 +90,6 @@ if show_equipment_table:
 
 st.markdown("---")
 st.caption("Dashboard by Khanh Huynh | Data Mining Class | Streamlit")
+
 
 
