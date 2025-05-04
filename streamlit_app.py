@@ -79,7 +79,9 @@ if show_equipment_table:
         else:
             return 'background-color: lightcoral'
 
-    styled_df = filtered_df[["Location", "Equipment_Downtime (hrs/month)"]].style.applymap(color_downtime, subset=["Equipment_Downtime (hrs/month)"])
+    formatted_df = filtered_df[["Location", "Equipment_Downtime (hrs/month)"]].copy()
+    formatted_df["Equipment_Downtime (hrs/month)"] = formatted_df["Equipment_Downtime (hrs/month)"].map(lambda x: f"{x:.2f}")
+    styled_df = formatted_df.style.applymap(color_downtime, subset=["Equipment_Downtime (hrs/month)"])
     st.dataframe(styled_df, use_container_width=True)
 
 # --- Optional Map Visualization ---
