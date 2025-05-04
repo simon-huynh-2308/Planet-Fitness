@@ -72,9 +72,10 @@ st.plotly_chart(bar_chart)
 if show_equipment_table:
     st.subheader("Color-Coded Downtime Table")
     def color_downtime(val):
-        if val < 30:
+        val_float = float(val)
+        if val_float < 30:
             return 'background-color: lightgreen'
-        elif val < 50:
+        elif val_float < 50:
             return 'background-color: khaki'
         else:
             return 'background-color: lightcoral'
@@ -92,6 +93,5 @@ if show_equipment_table:
 
 st.markdown("---")
 st.caption("Dashboard by Khanh Huynh | Data Mining Class | Streamlit")
-
 
 
