@@ -74,19 +74,6 @@ gauge_fig = go.Figure(go.Indicator(
 ))
 st.plotly_chart(gauge_fig)
 
-# --- KPI Summary Cards ---
-st.subheader("📊 Key Metrics Overview")
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.metric("Avg NPS Score", f"{df['NPS_Score'].mean():.1f}")
-
-with col2:
-    st.metric("Avg Churn Rate", f"{df['Monthly_Churn_Rate (%)'].mean():.2f}%")
-
-with col3:
-    st.metric("Avg Equipment Downtime", f"{df['Equipment_Downtime (hrs/month)'].mean():.2f} hrs")
-
 # --- Conditional Alerts ---
 if sat_score < 7.0:
     st.warning("⚠️ Warning: Average satisfaction is below acceptable level.")
