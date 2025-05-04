@@ -6,11 +6,14 @@ import plotly.graph_objects as go
 # Load dataset
 df = pd.read_csv("Regenerated_Planet_Fitness_KPI_Dataset.csv")
 
-# Sidebar filter
+# Sidebar filters
 selected_location = st.sidebar.selectbox("Select Location", ["All"] + sorted(df["Location"].unique().tolist()))
+satisfaction_threshold = st.sidebar.slider("Minimum Satisfaction Score", 6.0, 10.0, 7.0, 0.1)
+show_equipment_table = st.sidebar.checkbox("Show Detailed Equipment Table", value=True)
 
-# Filter data
+# Filter data based on user inputs
 filtered_df = df if selected_location == "All" else df[df["Location"] == selected_location]
+filtered_df = filtered_df[filtered_df["Avg_Satisfaction_Score (1-10)"] >= satisfaction_threshold]
 
 st.title("Planet Fitness Dashboard: Customer Satisfaction & Operational Efficiency")
 st.markdown("""
@@ -58,18 +61,26 @@ bar_chart = px.bar(filtered_df,
                    title="Monthly Equipment Downtime")
 st.plotly_chart(bar_chart)
 
-st.subheader("Color-Coded Downtime Table")
-def color_downtime(val):
-    if val < 30:
-        return 'background-color: lightgreen'
-    elif val < 50:
-        return 'background-color: khaki'
-    else:
-        return 'background-color: lightcoral'
+if show_equipment_table:
+    st.subheader("Color-Coded Downtime Table")
+    def color_downtime(val):
+        if val < 30:
+            return 'background-color: lightgreen'
+        elif val < 50:
+            return 'background-color: khaki'
+        else:
+            return 'background-color: lightcoral'
 
-styled_df = filtered_df[["Location", "Equipment_Downtime (hrs/month)"]].style.applymap(color_downtime, subset=["Equipment_Downtime (hrs/month)"])
-st.dataframe(styled_df, use_container_width=True)
+    styled_df = filtered_df[["Location", "Equipment_Downtime (hrs/month)"]].style.applymap(color_downtime, subset=["Equipment_Downtime (hrs/month)"])
+    st.dataframe(styled_df, use_container_width=True)
+
+# --- Optional Map Visualization ---
+# Example simulated coordinates (not in original dataset)
+# If you have real lat/lon, add them to df and uncomment below:
+# st.header("Map of Locations")
+# st.map(df[['latitude', 'longitude']])
 
 st.markdown("---")
 st.caption("Dashboard by Khanh Huynh | Data Mining Class | Streamlit")
+
 
