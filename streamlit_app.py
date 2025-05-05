@@ -99,9 +99,6 @@ with st.expander("Equipment Downtime", expanded=False):
         styled_df = formatted_df.style.applymap(color_downtime, subset=["Equipment_Downtime (hrs/month)"])
         st.dataframe(styled_df, use_container_width=True)
 
-# Optional Map
-# st.header("Map of Locations")
-# st.map(df[['latitude', 'longitude']])
 
 st.markdown("---")
 st.caption("Dashboard by Khanh Huynh | Data Mining Class | Streamlit")
